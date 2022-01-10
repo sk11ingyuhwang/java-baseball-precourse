@@ -1,18 +1,48 @@
 package baseball;
 
 import nextstep.utils.Console;
-import nextstep.utils.Randoms;
 
-public class playGame {
+public class PlayGame {
 
     static String userNumber = "";
     static int[] result;
     private PlayGameInit playGameInit;
 
 
-//    public String userInput(){
-//        return Console.readLine();
-//    }
+    public String userInput(){
+        boolean isCorrectInput = false;
+        String userName = "";
+        while(!isCorrectInput){
+            try{
+                System.out.println(PlayGameSentences
+                    .initInputSentence
+                    .replaceAll("[?]",Integer.toString(PlayGameSentences.randomNumberCount))
+                );
+                userName = Console.readLine();
+                isCorrectInput = inputValidCheck(userName);
+            }catch(InputValidException | NumberFormatException exception){
+                System.out.println(PlayGameSentences
+                    .wrongInputSentence
+                    .replaceAll("[?]",Integer.toString(PlayGameSentences.randomNumberCount))
+                );
+            }
+        }
+        return userName;
+    }
+
+    private boolean inputValidCheck(String userName) throws InputValidException, NumberFormatException{
+        if(userName.length() != PlayGameSentences.randomNumberCount)
+            throw new InputValidException();
+
+        char[] userNameArr = userName
+            .toCharArray();
+
+        for(int i=0; i<PlayGameSentences.randomNumberCount; i++){
+            if(userNameArr[i]<'0' || userNameArr[i]>'9') throw new NumberFormatException();
+            if(userNameArr[i]==userNameArr[(i+1)%PlayGameSentences.randomNumberCount]) throw new InputValidException();
+        }
+        return true;
+    }
 //
 //    public void baseballGameLogic(){
 //        char[] computerNumberArr = computerNumber.toCharArray();
@@ -73,18 +103,14 @@ public class playGame {
 //        return true;
 //    }
 //
-//    public boolean userNumberValidate(String userNumber){
-//        if(userNumber.length()!=3) return false;
-//        else
-//            return true;
-//    }
+
     public void start() {
         // TODO 숫자 야구 게임 구현
         playGameInit= new PlayGameInit();
-        System.out.println(playGameInit.getComputerNumber());
-//        while(true) {
-//            userNumber = userInput();
-//            if(!userNumberValidate(userNumber)) continue;
+
+        //while(true) {
+            userNumber = userInput();
+
 //            result = new int[2];
 //            baseballGameLogic();
 //            if(baseballGameEnd()) {
@@ -92,6 +118,6 @@ public class playGame {
 //            }
 //            else
 //                break;
-//        }
+        //}
     }
 }
