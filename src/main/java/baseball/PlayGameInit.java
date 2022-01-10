@@ -24,12 +24,12 @@ public class PlayGameInit {
         setComputerNumber("");
 
         while (true) {
-            int number = Randoms.pickNumberInRange(PlayGameSentences.baseballStartNumber, PlayGameSentences.baseballLastNumber);
+            int number = Randoms.pickNumberInRange(PlayGameSentences.BASEBALL_START_NUMBER, PlayGameSentences.BASEBALL_LAST_NUMBER);
             if (computerNumber.contains(number + "")) {
                 continue;
             }
             computerNumber += number;
-            if (computerNumber.length() == PlayGameSentences.randomNumberCount) {
+            if (computerNumber.length() == PlayGameSentences.RANDOM_NUMBER_COUNT) {
                 break;
             }
         }

@@ -29,10 +29,8 @@ public class PlayGameInfo {
     public String toString(){
         StringBuilder playGameResult = new StringBuilder();
         if(this.getStrike() == PlayGameSentences.RANDOM_NUMBER_COUNT){
-            playGameResult.append(PlayGameSentences
-                .THREE_STRIKE
-                .replaceAll("[?]", Integer.toString(PlayGameSentences.RANDOM_NUMBER_COUNT))
-            );
+            playGameResult.append(this.getStrike());
+            playGameResult.append(PlayGameSentences.STRIKE);
             return playGameResult.toString();
         }
         if(this.getBall() == PlayGameSentences.BASEBALL_ZERO_NUMBER &&
@@ -48,10 +46,11 @@ public class PlayGameInfo {
             playGameResult.append(PlayGameSentences.STRIKE);
             playGameResult.append(PlayGameSentences.SPACING);
         }
-        if(this.getStrike() > PlayGameSentences.BASEBALL_ZERO_NUMBER){
+        if(this.getBall() > PlayGameSentences.BASEBALL_ZERO_NUMBER){
             playGameResult.append(this.getBall());
             playGameResult.append(PlayGameSentences.BALL);
         }
         return playGameResult.toString();
+
     }
 }

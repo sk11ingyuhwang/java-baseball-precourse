@@ -4,8 +4,7 @@ import nextstep.utils.Console;
 
 public class PlayGame {
 
-    static String userNumber = "";
-    static int[] result;
+    private String userNumber = "";
     private PlayGameInit playGameInit;
     private PlayGameInfo playGameInfo;
 
@@ -62,66 +61,66 @@ public class PlayGame {
                 playGameInfoResult.addBall();
             }
         }
+
+        System.out.println(playGameInfoResult.toString());
         return playGameInfoResult;
     }
-//
-//    public boolean isFinish(){
-//        if(result[0] == 3){
-//            System.out.println("3스트라이크 게임 끝");
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    public void isNotFinish(){
-//        if (result[0] == 0 && result[1] == 0) {
-//            System.out.println("낫싱");
-//        } else if (result[0] == 0 && result[1] != 0) {
-//            for (int i = 0; i < 2; i++) {
-//                System.out.println(result[1] + "볼");
-//            }
-//        } else if (result[0] != 0 && result[1] == 0) {
-//            for (int i = 0; i < 2; i++) {
-//                System.out.println(result[0] + "스트라이크");
-//            }
-//        } else {
-//            for (int i = 0; i < 2; i++) {
-//                //System.out.println(result[1] + "볼 " + result[0] + "스트라이크");
-//                System.out.println(result[0] + "스트라이크 " + result[1] + "볼");
-//            }
-//        }
-//    }
-//
-    public boolean baseballGameEnd(PlayGameInfo playGameinfo){
-//        if(isFinish()) {
-//            System.out.println("다시 시작하시겠습니까? - 1");
-//            int selNumber = Integer.parseInt(userInput());
-//            if(selNumber == 1){
-//                makeRandomNumberComp();
-//                return true;
-//            }
-//            return false;
-//        }
-//        isNotFinish();
-//        return true;
 
+    public boolean baseballGameEnd(PlayGameInfo playGameinfo){
+        if(playGameinfo.getStrike() == PlayGameSentences.RANDOM_NUMBER_COUNT) return true;
+        return false;
+    }
+    public boolean repeatGame() {
+
+        int gameMode = 0;
+        boolean isRepeatGame = false;
+        while(gameMode != PlayGameOption.PLAY.number &&
+            gameMode != PlayGameOption.END.number
+        ){
+            try{
+                gameMode = Integer.parseInt(Console.readLine());
+                checkGameModeNumber(gameMode);
+            }catch(NumberFormatException | InputValidException exception){
+                System.out.println(PlayGameSentences.WRONG_INPUT_SENTENCE);
+            }
+        }
+
+        if(PlayGameOption.PLAY.number == gameMode){
+            initProgram();
+            isRepeatGame = true;
+        }
+
+        if(PlayGameOption.END.number == gameMode){
+            System.out.println(PlayGameSentences.GAMEOVER);
+        }
+
+        return isRepeatGame;
+    }
+    private void checkGameModeNumber(int gameMode) throws InputValidException{
+        if(gameMode < PlayGameOption.PLAY.number || gameMode > PlayGameOption.END.number)
+            throw new InputValidException();
     }
 
+    private void initProgram(){
+        playGameInit= new PlayGameInit();
+    }
 
     public void start() {
         // TODO 숫자 야구 게임 구현
-        playGameInit= new PlayGameInit();
 
-        while(baseballGameEnd(playGameInfo)) {
-            userNumber = userInput();
+        initProgram();
+        //System.out.println("Computer Number : "+playGameInit.getComputerNumber());
+        userNumber = userInput();
+        //System.out.println("UserNumber : "+userNumber);
+        playGameInfo = baseballGameLogic(userNumber);
 
-//            result = new int[2];
-              playGameInfo = baseballGameLogic(userNumber);
-//            if(baseballGameEnd()) {
-//                continue;
-//            }
-//            else
-//                break;
+        while(!baseballGameEnd(playGameInfo) ||
+            repeatGame()
+        ) {
+             userNumber = userInput();
+             //System.out.println("Computer Number : "+playGameInit.getComputerNumber());
+             playGameInfo = baseballGameLogic(userNumber);
+
         }
     }
 }
