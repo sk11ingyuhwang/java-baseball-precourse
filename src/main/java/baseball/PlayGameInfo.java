@@ -1,5 +1,7 @@
 package baseball;
 
+import utils.PlayGameSentences;
+
 public class PlayGameInfo {
     private int Strike;
     private int Ball;

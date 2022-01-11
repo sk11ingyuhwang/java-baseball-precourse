@@ -1,4 +1,4 @@
-package baseball;
+package exception;
 
 public class InputValidException extends RuntimeException {
     public InputValidException(){super();}

@@ -1,4 +1,4 @@
-package baseball;
+package utils;
 
 public enum PlayGameOption {
 
@@ -7,4 +7,8 @@ public enum PlayGameOption {
 
     public int number;
     private PlayGameOption(int number){this.number = number;}
+
+    public int getNumber() {
+        return number;
+    }
 }
