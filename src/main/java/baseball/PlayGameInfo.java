@@ -28,6 +28,8 @@ public class PlayGameInfo {
     public void addBall(){
         this.Ball+=1;
     }
+
+    @Override
     public String toString(){
         StringBuilder playGameResult = new StringBuilder();
         if(this.getStrike() == PlayGameSentences.RANDOM_NUMBER_COUNT){
