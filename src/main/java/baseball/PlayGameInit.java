@@ -26,7 +26,7 @@ public class PlayGameInit {
 
         while (true) {
             int number = Randoms.pickNumberInRange(PlayGameSentences.BASEBALL_START_NUMBER, PlayGameSentences.BASEBALL_LAST_NUMBER);
-            if (computerNumber.contains(number + "")) {
+            if (computerNumber.contains(String.valueOf(number))) {
                 continue;
             }
             computerNumber += number;
