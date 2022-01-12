@@ -16,13 +16,7 @@ public class PlayGame {
     private String userNumber = "";
     private PlayGameInfo playGameInfo;
     private PlayGameInit playGameInit;
-
-    private static BufferedWriter log = null;
-
-    static {
-        log = new BufferedWriter(new OutputStreamWriter(System.out));
-    }
-
+    private BufferedWriter log = new BufferedWriter(new OutputStreamWriter(System.out));
     private String userInput(){
         boolean isCorrectInput = false;
         String userNumber = "";
@@ -31,13 +25,13 @@ public class PlayGame {
                 log.write(
                     PlayGameSentences
                     .INIT_INPUT_SENTENCE
-                    .replaceAll("[?]",Integer.toString(PlayGameSentences.RANDOM_NUMBER_COUNT))+"\n"
+                    .replaceAll("[?]",String.valueOf(PlayGameSentences.RANDOM_NUMBER_COUNT))
                 );
                 log.flush();
                 userNumber = Console.readLine();
                 isCorrectInput = inputValidCheck(userNumber);
 
-
+            //try ~ with resources ..
             }catch(InputValidException | NumberFormatException | IOException exception){
                exception.printStackTrace();
             }
@@ -50,7 +44,7 @@ public class PlayGame {
         if(userNumber.length() != PlayGameSentences.RANDOM_NUMBER_COUNT) {
             throw new InputValidException(PlayGameSentences
                     .WRONG_INPUT_SENTENCE
-                    .replaceAll("[?]",Integer.toString(PlayGameSentences.RANDOM_NUMBER_COUNT)));
+                    .replaceAll("[?]",String.valueOf(PlayGameSentences.RANDOM_NUMBER_COUNT)));
         }
 
         char[] userNumberArr = userNumber
@@ -67,7 +61,7 @@ public class PlayGame {
                 throw new InputValidException(
                     PlayGameSentences
                     .WRONG_INPUT_SENTENCE
-                    .replaceAll("[?]",Integer.toString(PlayGameSentences.RANDOM_NUMBER_COUNT)));
+                    .replaceAll("[?]",String.valueOf(PlayGameSentences.RANDOM_NUMBER_COUNT)));
         }
         return true;
     }
@@ -96,8 +90,12 @@ public class PlayGame {
                                         return true;
                                     }).collect(Collectors.toList());
 
-        System.out.println(playGameInfoResult.toString());
-
+        try{
+            log.write(playGameInfoResult.toString());
+            log.flush();
+        }catch(IOException exception){
+            exception.printStackTrace();
+        }
         return playGameInfoResult;
     }
 
@@ -109,11 +107,13 @@ public class PlayGame {
 
         int gameMode = 0;
         boolean isRepeatGame = false;
+
+
         while(gameMode != PlayGameOption.PLAY.getNumber() &&
             gameMode != PlayGameOption.END.getNumber()
         ){
             try{
-                log.write(PlayGameSentences.REPEAT_GAME_SENTENCE+"\n");
+                log.write(PlayGameSentences.REPEAT_GAME_SENTENCE);
                 log.flush();
                 gameMode = Integer.parseInt(Console.readLine());
                 checkGameModeNumber(gameMode);
@@ -129,8 +129,9 @@ public class PlayGame {
 
         if(PlayGameOption.END.getNumber() == gameMode){
             try{
-                log.write(PlayGameSentences.GAMEOVER+"\n");
+                log.write(PlayGameSentences.GAMEOVER);
                 log.flush();
+                log.close();
             }catch(IOException exception){
                 exception.printStackTrace();
             }
