@@ -6,5 +6,3 @@ public class Application {
         new PlayGame().start();
     }
 }
-//shift+open+cmd+l
-//option+cmd+;

@@ -2,7 +2,6 @@ package utils;
 
 public class PlayGameSentences {
 
-
       public static final int BASEBALL_START_NUMBER = 1;
       public static final int BASEBALL_LAST_NUMBER = 9;
       public static final int BASEBALL_ZERO_NUMBER = 0;

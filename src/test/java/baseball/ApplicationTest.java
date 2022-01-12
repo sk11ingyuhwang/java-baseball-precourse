@@ -38,16 +38,7 @@ public class ApplicationTest extends NSTest {
         }
     }
 
-    @Test
-    void 게임종료_후_재시작2() {
-        try (final MockedStatic<Randoms> mockRandoms = mockStatic(Randoms.class)) {
-            mockRandoms.when(() -> Randoms.pickNumberInRange(anyInt(), anyInt()))
-                .thenReturn(7, 1, 3)
-                .thenReturn(5, 8, 9);
-            run("713", "1", "597", "589", "2");
-            verify("3스트라이크", "게임 끝", "1스트라이크 1볼");
-        }
-    }
+
 
     @AfterEach
     void tearDown() {

@@ -4,6 +4,9 @@ import exception.InputValidException;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import nextstep.utils.Console;
 import utils.PlayGameOption;
 import utils.PlayGameSentences;
@@ -53,6 +56,7 @@ public class PlayGame {
         char[] userNumberArr = userNumber
             .toCharArray();
 
+
         for(int i=PlayGameSentences.BASEBALL_ZERO_NUMBER; i<PlayGameSentences.RANDOM_NUMBER_COUNT; i++){
             if(userNumberArr[i]<'0' || userNumberArr[i]>'9')
                 throw new NumberFormatException(
@@ -71,30 +75,28 @@ public class PlayGame {
     private PlayGameInfo baseballGameLogic(String userName){
 
         PlayGameInfo playGameInfoResult = new PlayGameInfo();
-
         char[] computerNumberArr = playGameInit.getComputerNumber().toCharArray();
         char[] userNumberArr = userNumber.toCharArray();
 
-        try {
 
-            for (int i = PlayGameSentences.BASEBALL_ZERO_NUMBER; i < PlayGameSentences.RANDOM_NUMBER_COUNT; i++) {
-                if (computerNumberArr[i] == userNumberArr[i]) {
-                    playGameInfoResult.addStrke();
-                }
-            }
+        List<Boolean> strikeResult = IntStream.range(0, PlayGameSentences.RANDOM_NUMBER_COUNT)
+                                .mapToObj(idx ->  {
+                                    if(computerNumberArr[idx] == userNumberArr[idx])
+                                            playGameInfoResult.addStrke();
+                                    return true;
+                                 }).collect(Collectors.toList());
 
-            for (int i = PlayGameSentences.BASEBALL_ZERO_NUMBER; i < PlayGameSentences.RANDOM_NUMBER_COUNT; i++) {
-                if (computerNumberArr[i] != userNumberArr[i] && playGameInit.getComputerNumber().contains(
-                    userNumberArr[i] + "")) {
-                    playGameInfoResult.addBall();
-                }
-            }
-            log.write(playGameInfoResult.toString()+"\n");
+        List<Boolean> ballResult = IntStream.range(0, PlayGameSentences.RANDOM_NUMBER_COUNT)
+                                    .mapToObj(idx -> {
+                                        if (computerNumberArr[idx] != userNumberArr[idx] &&
+                                            playGameInit.getComputerNumber().contains(
+                                            userNumberArr[idx] + "")) {
+                                            playGameInfoResult.addBall();
+                                        }
+                                        return true;
+                                    }).collect(Collectors.toList());
 
-            log.flush();
-        }catch(IOException exception){
-            exception.printStackTrace();
-        }
+        System.out.println(playGameInfoResult.toString());
 
         return playGameInfoResult;
     }
@@ -111,7 +113,7 @@ public class PlayGame {
             gameMode != PlayGameOption.END.getNumber()
         ){
             try{
-                log.write(PlayGameSentences.REPEAT_GAME_SENTENCE);
+                log.write(PlayGameSentences.REPEAT_GAME_SENTENCE+"\n");
                 log.flush();
                 gameMode = Integer.parseInt(Console.readLine());
                 checkGameModeNumber(gameMode);
@@ -127,7 +129,8 @@ public class PlayGame {
 
         if(PlayGameOption.END.getNumber() == gameMode){
             try{
-                log.write(PlayGameSentences.GAMEOVER);
+                log.write(PlayGameSentences.GAMEOVER+"\n");
+                log.flush();
             }catch(IOException exception){
                 exception.printStackTrace();
             }
