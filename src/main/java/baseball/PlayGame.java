@@ -17,10 +17,12 @@ public class PlayGame {
     private PlayGameInfo playGameInfo;
     private PlayGameInit playGameInit;
     private BufferedWriter log = new BufferedWriter(new OutputStreamWriter(System.out));
+
     private String userInput(){
         boolean isCorrectInput = false;
         String userNumber = "";
         while(!isCorrectInput){
+
             try{
                 log.write(
                     PlayGameSentences
@@ -28,12 +30,19 @@ public class PlayGame {
                     .replaceAll("[?]",String.valueOf(PlayGameSentences.RANDOM_NUMBER_COUNT))
                 );
                 log.flush();
+
+
+
+            }catch(IOException exception){
+               exception.printStackTrace();
+            }
+
+
+            try {
                 userNumber = Console.readLine();
                 isCorrectInput = inputValidCheck(userNumber);
-
-            //try ~ with resources ..
-            }catch(InputValidException | NumberFormatException | IOException exception){
-               exception.printStackTrace();
+            }catch(InputValidException | NumberFormatException exception){
+                exception.printStackTrace();
             }
         }
 
@@ -84,7 +93,7 @@ public class PlayGame {
                                     .mapToObj(idx -> {
                                         if (computerNumberArr[idx] != userNumberArr[idx] &&
                                             playGameInit.getComputerNumber().contains(
-                                            userNumberArr[idx] + "")) {
+                                            String.valueOf(userNumberArr[idx]))) {
                                             playGameInfoResult.addBall();
                                         }
                                         return true;
@@ -93,6 +102,7 @@ public class PlayGame {
         try{
             log.write(playGameInfoResult.toString());
             log.flush();
+
         }catch(IOException exception){
             exception.printStackTrace();
         }
@@ -128,10 +138,10 @@ public class PlayGame {
         }
 
         if(PlayGameOption.END.getNumber() == gameMode){
-            try{
+            try(BufferedWriter log = new BufferedWriter(new OutputStreamWriter(System.out))){
                 log.write(PlayGameSentences.GAMEOVER);
                 log.flush();
-                log.close();
+
             }catch(IOException exception){
                 exception.printStackTrace();
             }
@@ -155,11 +165,13 @@ public class PlayGame {
     }
 
     private void initProgram(){
+
         playGameInit = new PlayGameInit();
     }
 
     public void start() {
         // TODO 숫자 야구 게임 구현
+
         initProgram();
         gameStart();
 
